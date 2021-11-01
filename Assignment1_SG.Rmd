@@ -1,0 +1,49 @@
+---
+title: "ANA 515 Assignment "
+author: "Siliang Gong"
+date: "Oct 31, 2021"
+output:
+  pdf_document: default
+  html_document: default
+  theme: bootswatch: minty
+---
+
+``` {r setup, include = FALSE}
+library(bslib)
+library(tidyverse)
+library(knitr)
+library(ggplot2)
+```
+
+
+```{r, echo = T}
+## read data
+ analysis.data <- read.csv("https://raw.githubusercontent.com/fivethirtyeight/guns-data/master/full_data.csv")
+
+```
+
+```{r, echo = T}
+## create a subset of gun_deaths
+
+youth <- analysis.data%>%filter(age<=65)
+summary(youth)
+
+```
+
+We have data about `r nrow(analysis.data)` individuals killed by guns. Only `r nrow(analysis.data)-nrow(youth)` are older than 65.
+
+``` {r youth-dist,  echo = FALSE}
+#This next code chunk will make a plot for the distribution of age in youth
+youth%>%ggplot(aes(age))+
+  geom_freqpoly(binwidth = 1)
+
+```
+
+``` {r race-dist,  echo = FALSE}
+#This next code chunk will make a plot for the distribution of youth by race
+
+youth%>%ggplot(aes(fct_infreq(race)%>%fct_rev()))+
+  geom_bar() + coord_flip() + labs(x = "Victim race")
+
+```
+
